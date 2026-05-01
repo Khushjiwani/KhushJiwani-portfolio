@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@theme {
+  --font-outfit: "Outfit", system-ui, sans-serif;
+}
+
+:root {
+  font-family: var(--font-outfit);
+}
+
+body {
+  @apply bg-[#1a1c23] text-[#f1f5f9] antialiased selection:bg-[#84a5c6] selection:text-white overflow-x-hidden;
+}
+
+.glass {
+  @apply bg-[#1a1c23]/70 backdrop-blur-xl border border-[#f1f5f9]/10;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#5a82a8] via-[#84a5c6] to-[#94a3b8];
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1c23;
+}
+::-webkit-scrollbar-thumb {
+  background: #84a5c6;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5a82a8;
+}
