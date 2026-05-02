@@ -32,6 +32,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -48,6 +49,8 @@ const Navbar = () => {
         <div className="text-xl font-bold tracking-tight cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <span className="text-gradient tracking-widest font-black">KHUSH</span><span className="text-[#94a3b8] font-light ml-1">JIWANI</span>
         </div>
+
+        {/* Desktop Nav */}
         <div className="hidden md:flex gap-8 text-sm font-medium">
           {['About', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => (
             <ScrollLink
@@ -61,7 +64,8 @@ const Navbar = () => {
             </ScrollLink>
           ))}
         </div>
-        <div className="flex items-center gap-4">
+
+        <div className="flex items-center gap-3">
           <a
             href="/resume.pdf"
             download="Khushjiwani_Resume.pdf"
@@ -72,12 +76,66 @@ const Navbar = () => {
           </a>
           <a
             href="mailto:khushjiwani02@gmail.com"
-            className="bg-gradient-to-r from-[#5a82a8] to-[#84a5c6] text-[#f1f5f9] px-5 py-2 rounded-full text-sm font-medium hover:bg-[#94a3b8] transition-colors"
+            className="hidden sm:flex bg-gradient-to-r from-[#5a82a8] to-[#84a5c6] text-[#f1f5f9] px-5 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-colors"
           >
             Let's Talk
           </a>
+
+          {/* Hamburger Button (mobile only) */}
+          <button
+            className="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-[#f1f5f9]/10 transition-colors"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className={cn("block w-6 h-0.5 bg-[#f1f5f9] transition-all duration-300", menuOpen && "rotate-45 translate-y-2")} />
+            <span className={cn("block w-6 h-0.5 bg-[#f1f5f9] transition-all duration-300", menuOpen && "opacity-0")} />
+            <span className={cn("block w-6 h-0.5 bg-[#f1f5f9] transition-all duration-300", menuOpen && "-rotate-45 -translate-y-2")} />
+          </button>
         </div>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden overflow-hidden"
+          >
+            <div className="glass mt-3 rounded-2xl px-6 py-4 flex flex-col gap-4 border border-[#f1f5f9]/10">
+              {['About', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => (
+                <ScrollLink
+                  key={item}
+                  to={item.toLowerCase()}
+                  smooth={true}
+                  duration={500}
+                  className="cursor-pointer text-sm font-medium hover:text-[#84a5c6] transition-colors py-1"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item}
+                </ScrollLink>
+              ))}
+              <div className="flex flex-col gap-3 pt-3 border-t border-[#f1f5f9]/10">
+                <a
+                  href="/resume.pdf"
+                  download="Khushjiwani_Resume.pdf"
+                  className="flex items-center gap-2 text-sm font-medium border border-[#f1f5f9]/20 px-4 py-2 rounded-full hover:bg-[#f1f5f9]/5 transition-colors w-fit"
+                >
+                  <Download size={16} />
+                  Resume
+                </a>
+                <a
+                  href="mailto:khushjiwani02@gmail.com"
+                  className="bg-gradient-to-r from-[#5a82a8] to-[#84a5c6] text-[#f1f5f9] px-5 py-2 rounded-full text-sm font-medium w-fit"
+                >
+                  Let's Talk
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
